@@ -36,4 +36,6 @@ public class KitchenObject : MonoBehaviour
         return clearCounter;
     }
 
+    //Just making a not to test automation of commits. need something to commit.
+
 }
