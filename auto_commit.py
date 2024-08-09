@@ -37,19 +37,19 @@ def generate_commit_message(diff):
     try:
         message = client.messages.create(
             model="claude-3-5-sonnet-20240620",
-            max_tokens=100,
+            max_tokens=300,
             temperature=0,
-            system="You are an expert in creating concise and meaningful git commit messages. Analyze the provided diff and create a commit message.",
+            system="You are a highly skilled developer with expertise in crafting clear and concise git commit messages. Analyze the provided diff and generate a commit message that effectively summarizes the changes. Start with a brief, impactful summary line (50 characters max), followed by a blank line, and then a more detailed explanation if necessary. Ensure the message is precise, informative, and adheres to best practices for commit messages.",
             messages=[
                 {
                     "role": "user",
-                    "content": f"Analyze the following diff and create a concise and meaningful git commit message:\n\n{diff}"
+                    "content": f"Analyze the following diff and create a meaningful git commit message:\n\n{diff}"
                 }
             ]
         )
-        # Extract the text from the message content
+        # Extract the full text from the message content
         commit_message = message.content[0].text if message.content else "Update made to the repository"
-        return commit_message.split('\n')[0]  # Return only the first line
+        return commit_message.strip()  # Return the full message
     except Exception as e:
         print(f"Error during API request: {e}")
         return "Update made to the repository"
@@ -57,13 +57,16 @@ def generate_commit_message(diff):
 def commit_changes(commit_message):
     try:
         subprocess.run(['git', 'add', '.'], check=True)
-        # Use -m for each line of the commit message
-        commit_cmd = ['git', 'commit']
-        for line in commit_message.split('\n'):
-            commit_cmd.extend(['-m', line])
+        # Use -m for the first line, and -m again for the rest of the message
+        first_line, _, rest = commit_message.partition('\n')
+        commit_cmd = ['git', 'commit', '-m', first_line]
+        if rest:
+            commit_cmd.extend(['-m', rest.strip()])
         subprocess.run(commit_cmd, check=True)
         subprocess.run(['git', 'push'], check=True)
         print("Changes committed and pushed successfully.")
+        print("Full commit message:")
+        print(commit_message)
     except subprocess.CalledProcessError as e:
         print(f"Error committing changes: {e}")
 
