@@ -375,4 +375,5 @@ FodyWeavers.xsd
 /[Ll]ibrary/PackageCache/*
 
 # Ignore specific large files
-*.dylib
+*.dylib".env" 
+".env" 

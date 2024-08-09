@@ -1,17 +1,16 @@
 import os
 import subprocess
-import requests
+import anthropic
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-# Define your Claude API endpoint and API key
-CLAUDE_API_URL = "https://api.anthropic.com/v1/claude"
-CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
+# Use the API key from the environment variable
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
 def is_git_repository():
-    try: 
+    try:
         subprocess.run(['git', 'rev-parse', '--is-inside-work-tree'], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         return True
     except subprocess.CalledProcessError:
@@ -33,33 +32,36 @@ def get_git_changes():
         return None, None
 
 def generate_commit_message(diff):
-    headers = {
-        "Authorization": f"Bearer {CLAUDE_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "prompt": f"Analyze the following diff and create a concise and meaningful git commit message:\n\n{diff}",
-        "max_tokens": 100,
-        "model": "claude-v1"
-    }
+    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+   
     try:
-        response = requests.post(CLAUDE_API_URL, json=payload, headers=headers)
-        response.raise_for_status()
-        response_data = response.json()
-        if "choices" in response_data and response_data["choices"]:
-            message = response_data["choices"][0].get("text", "").strip()
-            return message if message else "Update made to the repository"
-        else:
-            print("Unexpected response format or empty 'choices'. Response data:", response_data)
-            return "Update made to the repository"
-    except requests.exceptions.RequestException as e:
-        print("Error during API request:", e)
+        message = client.messages.create(
+            model="claude-3-5-sonnet-20240620",
+            max_tokens=100,
+            temperature=0,
+            system="You are an expert in creating concise and meaningful git commit messages. Analyze the provided diff and create a commit message.",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Analyze the following diff and create a concise and meaningful git commit message:\n\n{diff}"
+                }
+            ]
+        )
+        # Extract the text from the message content
+        commit_message = message.content[0].text if message.content else "Update made to the repository"
+        return commit_message.split('\n')[0]  # Return only the first line
+    except Exception as e:
+        print(f"Error during API request: {e}")
         return "Update made to the repository"
 
 def commit_changes(commit_message):
     try:
         subprocess.run(['git', 'add', '.'], check=True)
-        subprocess.run(['git', 'commit', '-m', commit_message], check=True)
+        # Use -m for each line of the commit message
+        commit_cmd = ['git', 'commit']
+        for line in commit_message.split('\n'):
+            commit_cmd.extend(['-m', line])
+        subprocess.run(commit_cmd, check=True)
         subprocess.run(['git', 'push'], check=True)
         print("Changes committed and pushed successfully.")
     except subprocess.CalledProcessError as e:
@@ -70,8 +72,8 @@ def main():
         print("Current directory is not a Git repository.")
         return
 
-    if not CLAUDE_API_KEY:
-        print("CLAUDE_API_KEY is not set in the environment variables.")
+    if not ANTHROPIC_API_KEY:
+        print("ANTHROPIC_API_KEY is not set in the environment variables.")
         return
 
     changed_files, diff = get_git_changes()
