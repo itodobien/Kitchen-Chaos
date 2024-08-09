@@ -62,14 +62,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\SelectedCounterVisual.cs" />
     <Compile Include="Assets\Settings\Animations\PlayerInputActions.cs" />
-    <Compile Include="Assets\Scripts\ContainerCounter.cs" />
+    <Compile Include="Assets\Scripts\KitchenObjects.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerAnimator.cs" />
-    <Compile Include="Assets\Scripts\IKitchenObjectParent.cs" />
     <Compile Include="Assets\Scripts\GameInput.cs" />
     <Compile Include="Assets\Scripts\ClearCounter.cs" />
-    <Compile Include="Assets\Scripts\KitchenObject.cs" />
-    <Compile Include="Assets\Scripts\BaseCounter.cs" />
     <Compile Include="Assets\Scripts\KitchenObjectSciptObj.cs" />
   </ItemGroup>
   <ItemGroup>

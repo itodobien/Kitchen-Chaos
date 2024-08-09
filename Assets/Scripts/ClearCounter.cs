@@ -1,33 +1,43 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClearCounter : BaseCounter, IKitchenObjectParent
+public class ClearCounter : MonoBehaviour
 {
-    [SerializeField] private KitchenObjectScriptObj kitchenObjectScriptObj;
+
+    [SerializeField] private KitchenObjectScriptObj kitchenObjectSciptObj;
     [SerializeField] private Transform counterTopPoint;
+    [SerializeField] private ClearCounter secondClearCounter;
+    [SerializeField] private bool testing;
 
     private KitchenObject kitchenObject;
 
-    public override void Interact(Player player)
+    private void Update()
     {
-        Debug.Log("ClearCounter Interact method called"); // Debug log
+        if (testing && Input.GetKeyDown(KeyCode.T))
+        {
+            if (kitchenObject != null)
+            {
+                kitchenObject.SetClearCounter(secondClearCounter);
+            }
+        }
+    }
+    public void Interact()
+    {
         if (kitchenObject == null)
         {
-            // Spawn a kitchen object at the counter top point
-            Transform kitchenObjectTransform = Instantiate(kitchenObjectScriptObj.prefab, counterTopPoint);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
-            Debug.Log("Kitchen object spawned"); // Debug log
+            // Spawn a tomato at the counter top point
+            Transform kitchenObjectTransform = Instantiate(kitchenObjectSciptObj.prefab, counterTopPoint);
+            kitchenObjectTransform.GetComponent<KitchenObject>().SetClearCounter(this);
         }
         else
         {
-            // Give the object to the player
-            kitchenObject.SetKitchenObjectParent(player);
-            Debug.Log("Kitchen object given to player"); // Debug log
-        }
+            Debug.Log(kitchenObject.GetClearCounter());
+        }        
+       
     }
-
-    public Transform GetKitchenObjectFollowTransform()
+    public Transform GetkitchenObjectFollowTransform()
     {
         return counterTopPoint;
     }
