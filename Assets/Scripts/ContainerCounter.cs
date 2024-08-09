@@ -2,29 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClearCounter : BaseCounter, IKitchenObjectParent
+public class ContainerCounter : BaseCounter, IKitchenObjectParent
 {
-    [SerializeField] private KitchenObjectScriptObj kitchenObjectScriptObj;
+    [SerializeField] private KitchenObjectScriptObj kitchenObjectSciptObj;
     [SerializeField] private Transform counterTopPoint;
 
     private KitchenObject kitchenObject;
-
     public override void Interact(Player player)
     {
-        Debug.Log("ClearCounter Interact method called"); // Debug log
         if (kitchenObject == null)
         {
-            // Spawn a kitchen object at the counter top point
-            Transform kitchenObjectTransform = Instantiate(kitchenObjectScriptObj.prefab, counterTopPoint);
+            // Spawn a tomato at the counter top point
+            Transform kitchenObjectTransform = Instantiate(kitchenObjectSciptObj.prefab, counterTopPoint);
             kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
-            Debug.Log("Kitchen object spawned"); // Debug log
         }
         else
         {
             // Give the object to the player
             kitchenObject.SetKitchenObjectParent(player);
-            Debug.Log("Kitchen object given to player"); // Debug log
+
         }
+
     }
 
     public Transform GetKitchenObjectFollowTransform()
