@@ -5,7 +5,8 @@ using System;
 public class GameInput : MonoBehaviour
 {
     // Event triggered when the interact action is performed
-    public event EventHandler onInteractAction;
+    public event EventHandler OnInteractAction;
+    public event EventHandler OnInteractAlternateAction;
 
     // Reference to the PlayerInputActions
     private PlayerInputActions playerInputActions;
@@ -20,12 +21,19 @@ public class GameInput : MonoBehaviour
 
         // Subscribe to the Interact action performed event
         playerInputActions.Player.Interact.performed += Interact_performed;
+        playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
+
+    }
+
+    private void InteractAlternate_performed(InputAction.CallbackContext obj)
+    {
+        OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void Interact_performed(InputAction.CallbackContext obj)
     {
-        // Invoke the onInteractAction event when the interact action is performed
-        onInteractAction?.Invoke(this, EventArgs.Empty);
+        // Invoke the OnInteractAction event when the interact action is performed
+        OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 
     // Method to get the normalized movement vector from the input

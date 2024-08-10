@@ -40,10 +40,26 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private void Start()
     {
         // Subscribe to the interact action event from the GameInput class
-        gameInput.onInteractAction += GameInput_onInteractAction;
+        gameInput.OnInteractAction += GameInput_OnInteractAction;
+        gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
     }
 
-    private void GameInput_onInteractAction(object sender, EventArgs e)
+    private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
+    {
+        Debug.Log("Interact Alternate action triggered"); // Debug log
+        if (selectedCounter != null)
+        {
+            // Interact with the selected counter
+            selectedCounter.InteractAlternate(this);
+            Debug.Log($"Interacting with {selectedCounter.gameObject.name}"); // Debug log
+        }
+        else
+        {
+            Debug.Log("No counter selected for interaction"); // Debug log
+        }
+    }
+
+    private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
         Debug.Log("Interact action triggered"); // Debug log
         if (selectedCounter != null)
@@ -153,7 +169,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
         isWalking = moveDir != Vector3.zero; // Update the walking state
 
-        float rotateSpeed = 10f; // Speed at which the player rotates
+        float rotateSpeed = 12f; // Speed at which the player rotates
         // Smoothly rotate the player to face the movement direction
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }

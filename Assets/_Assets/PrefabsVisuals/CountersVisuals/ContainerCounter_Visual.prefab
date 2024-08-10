@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3335213437781896786}
   - component: {fileID: 1350422482120043265}
   - component: {fileID: 5850129231471598083}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4589716710238282923}
   - component: {fileID: 6289625630049244101}
   - component: {fileID: 6487702808732527527}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ContainerCounter_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181fc62f0623f644c9364842422ded9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  containerCounter: {fileID: 0}
 --- !u!1 &5261771210811040880
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3187838834277086178}
   - component: {fileID: 4841286013473667211}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ObjectSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,6 +326,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Single door
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ea8d8015153ce064cbdaa9932bf81a04,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -425,6 +431,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1ba85bfeead668d408d59b5a3f9fb434,
         type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1ba85bfeead668d408d59b5a3f9fb434,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -521,6 +532,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Counter_hole
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eb2eec5d81be49b4b95cf99cf6e91f48,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: eb2eec5d81be49b4b95cf99cf6e91f48,
         type: 3}

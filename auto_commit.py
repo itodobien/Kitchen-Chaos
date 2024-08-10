@@ -1,6 +1,6 @@
 import os
 import subprocess
-import anthropic
+from anthropic import Anthropic, HUMAN_PROMPT, AI_PROMPT
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -30,23 +30,16 @@ def get_git_changes():
         return None, None
 
 def generate_commit_message(diff):
-    client = anthropic.Anthropic()
+    client = Anthropic(api_key=ANTHROPIC_API_KEY)
     
     try:
-        message = client.messages.create(
-            model="claude-3-5-sonnet-20240620",
-            max_tokens=1000,
-            temperature=0,
-            system="You are an expert in creating concise and meaningful git commit messages. Analyze the provided diff and create a commit message that summarizes the changes effectively.",
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"Analyze this diff and create a git commit message:\n\n{diff}"
-                }
-            ]
+        response = client.completions.create(
+            model="claude-1",
+            max_tokens_to_sample=1000,
+            prompt=f"{HUMAN_PROMPT}You are an expert in creating meaningful git commit messages. Analyze the provided diff and create a commit message that summarizes the changes in 2-3 sentences. Start with a short (50 chars max) summary line, followed by a blank line, then more detailed explanation if needed.\n\n{diff}{AI_PROMPT}"
         )
-        commit_message = message.content[0].text if message.content else "Update repository"
-        return commit_message.strip()
+        commit_message = response['completion'].strip()
+        return commit_message
     except Exception as e:
         print(f"Error during API request: {e}")
         return "Update repository"

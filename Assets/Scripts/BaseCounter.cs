@@ -16,6 +16,11 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
         Debug.Log("Interacting with base counter");
     }
 
+    public virtual void InteractAlternate(Player player)
+    {
+        Debug.Log("InteractingAlternate with base counter");
+    }
+
     // Method to get the transform where the kitchen object should follow
     public Transform GetKitchenObjectFollowTransform()
     {

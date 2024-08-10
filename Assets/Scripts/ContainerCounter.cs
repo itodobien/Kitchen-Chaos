@@ -14,6 +14,10 @@ public class ContainerCounter : BaseCounter
     // Override the Interact method to handle player interaction with the container
     public override void Interact(Player player)
     {
+        if (!player.HasKitchenObject())
+            //Player is not carrying a kitchen object
+        {
+
         // Instantiate the kitchen object prefab
         Transform kitchenObjectTransform = Instantiate(kitchenObjectScriptObj.prefab);
 
@@ -22,5 +26,6 @@ public class ContainerCounter : BaseCounter
 
         // Invoke the OnPlayerGrabbedObject event
         OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
