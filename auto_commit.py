@@ -8,7 +8,6 @@ load_dotenv()
 
 # Use the API key from the environment variable
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-print(f"API Key loaded: {'Yes' if ANTHROPIC_API_KEY else 'No'}")
 
 def is_git_repository():
     try:
@@ -19,12 +18,10 @@ def is_git_repository():
 
 def get_git_changes():
     try:
-        # Get the list of changed files
         result = subprocess.run(['git', 'status', '--porcelain'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         changed_files = result.stdout.decode('utf-8').strip()
         if not changed_files:
             return None, None
-        # Get the diff of the changes
         result = subprocess.run(['git', 'diff'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         diff = result.stdout.decode('utf-8').strip()
         return changed_files, diff
@@ -33,32 +30,30 @@ def get_git_changes():
         return None, None
 
 def generate_commit_message(diff):
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-   
+    client = anthropic.Anthropic()
+    
     try:
         message = client.messages.create(
             model="claude-3-5-sonnet-20240620",
-            max_tokens=300,
+            max_tokens=1000,
             temperature=0,
-            system="You are a highly skilled developer with expertise in crafting clear and concise git commit messages. Analyze the provided diff and generate a commit message that effectively summarizes the changes. Start with a brief, impactful summary line (50 characters max), followed by a blank line, and then a more detailed explanation if necessary. Ensure the message is precise, informative, and adheres to best practices for commit messages.",
+            system="You are an expert in creating concise and meaningful git commit messages. Analyze the provided diff and create a commit message that summarizes the changes effectively.",
             messages=[
                 {
                     "role": "user",
-                    "content": f"Analyze the following diff and create a meaningful git commit message:\n\n{diff}"
+                    "content": f"Analyze this diff and create a git commit message:\n\n{diff}"
                 }
             ]
         )
-        # Extract the full text from the message content
-        commit_message = message.content[0].text if message.content else "Update made to the repository"
-        return commit_message.strip()  # Return the full message
+        commit_message = message.content[0].text if message.content else "Update repository"
+        return commit_message.strip()
     except Exception as e:
         print(f"Error during API request: {e}")
-        return "Update made to the repository"
+        return "Update repository"
 
 def commit_changes(commit_message):
     try:
         subprocess.run(['git', 'add', '.'], check=True)
-        # Use -m for the first line, and -m again for the rest of the message
         first_line, _, rest = commit_message.partition('\n')
         commit_cmd = ['git', 'commit', '-m', first_line]
         if rest:
@@ -66,8 +61,7 @@ def commit_changes(commit_message):
         subprocess.run(commit_cmd, check=True)
         subprocess.run(['git', 'push'], check=True)
         print("Changes committed and pushed successfully.")
-        print("Full commit message:")
-        print(commit_message)
+        print("Commit message:", commit_message)
     except subprocess.CalledProcessError as e:
         print(f"Error committing changes: {e}")
 
@@ -75,22 +69,16 @@ def main():
     if not is_git_repository():
         print("Current directory is not a Git repository.")
         return
-
     if not ANTHROPIC_API_KEY:
         print("ANTHROPIC_API_KEY is not set in the environment variables.")
         return
-
     changed_files, diff = get_git_changes()
     if not diff:
         print("No changes detected.")
         return
-
-    print("Changes detected:")
-    print(changed_files)
+    print("Changes detected:", changed_files)
     print("Generating commit message...")
     commit_message = generate_commit_message(diff)
-    print("Generated commit message:")
-    print(commit_message)
     print("Committing changes...")
     commit_changes(commit_message)
 
