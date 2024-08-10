@@ -125,7 +125,8 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1a0afd856a35421469b28b916116fd9c, type: 2}
     m_RemovedComponents:
     - {fileID: 6289625630049244101, guid: 9a9137fa2b035d34e881701d2c178192, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5261771210811040880, guid: 9a9137fa2b035d34e881701d2c178192, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4589716710238282922, guid: 9a9137fa2b035d34e881701d2c178192,
@@ -157,11 +158,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15edda5aba3a959459e035a326296cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCounter: {fileID: 0}
-  visualGameObject: {fileID: 4793030085677411686}
+  baseCounter: {fileID: 1190357074616818893}
+  visualGameObjectArray:
+  - {fileID: 4793030085677411686}
+  - {fileID: 6917113457149133551}
+  - {fileID: 3033607702527612674}
+  - {fileID: 3428133208758377700}
+--- !u!1 &3033607702527612674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 353237590725857035, guid: 9a9137fa2b035d34e881701d2c178192,
+    type: 3}
+  m_PrefabInstance: {fileID: 3386559131661604873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3428133208758377700 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 102550813385737453, guid: 9a9137fa2b035d34e881701d2c178192,
+    type: 3}
+  m_PrefabInstance: {fileID: 3386559131661604873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4793030085677411686 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7816906318471787887, guid: 9a9137fa2b035d34e881701d2c178192,
+    type: 3}
+  m_PrefabInstance: {fileID: 3386559131661604873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6917113457149133551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8143070647044102886, guid: 9a9137fa2b035d34e881701d2c178192,
     type: 3}
   m_PrefabInstance: {fileID: 3386559131661604873}
   m_PrefabAsset: {fileID: 0}
@@ -228,6 +251,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6487702808732527527, guid: 9a9137fa2b035d34e881701d2c178192,
+        type: 3}
+      propertyPath: containerCounter
+      value: 
+      objectReference: {fileID: 1190357074616818893}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -349,6 +377,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0818690b16e9ece4499e4d083cb77e86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kitchenObjectSciptObj: {fileID: 11400000, guid: 2c2b98126b384df408cd2ef5d9f5af85,
-    type: 2}
   counterTopPoint: {fileID: 6743460224100876649}
+  kitchenObjectScriptObj: {fileID: 0}

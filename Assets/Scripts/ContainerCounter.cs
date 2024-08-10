@@ -1,52 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ContainerCounter : BaseCounter, IKitchenObjectParent
+public class ContainerCounter : BaseCounter 
 {
-    [SerializeField] private KitchenObjectScriptObj kitchenObjectSciptObj;
-    [SerializeField] private Transform counterTopPoint;
+    [SerializeField] private KitchenObjectScriptObj kitchenObjectScriptObj;
 
-    private KitchenObject kitchenObject;
+    public event EventHandler OnPlayerGrabbedObject;
+ 
     public override void Interact(Player player)
     {
-        if (kitchenObject == null)
-        {
-            // Spawn a tomato at the counter top point
-            Transform kitchenObjectTransform = Instantiate(kitchenObjectSciptObj.prefab, counterTopPoint);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
-        }
-        else
-        {
-            // Give the object to the player
-            kitchenObject.SetKitchenObjectParent(player);
+        Transform kitchenObjectTransform = Instantiate(kitchenObjectScriptObj.prefab);
+        kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
+        OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
 
-        }
-
-    }
-
-    public Transform GetKitchenObjectFollowTransform()
-    {
-        return counterTopPoint;
-    }
-
-    public void SetKitchenObject(KitchenObject kitchenObject)
-    {
-        this.kitchenObject = kitchenObject;
-    }
-
-    public KitchenObject GetKitchenObject()
-    {
-        return kitchenObject;
-    }
-
-    public void ClearKitchenObject()
-    {
-        kitchenObject = null;
-    }
-
-    public bool HasKitchenObject()
-    {
-        return kitchenObject != null;
-    }
+    }    
 }
