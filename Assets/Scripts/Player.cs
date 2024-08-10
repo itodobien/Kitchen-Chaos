@@ -16,16 +16,16 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     }
 
     // Serialized fields for configuration in the Unity Editor
-    [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private GameInput gameInput;
-    [SerializeField] private LayerMask countersLayerMask;
-    [SerializeField] private Transform kitchenObjectHoldPoint;
+    [SerializeField] private float moveSpeed = 7f; // Speed at which the player moves
+    [SerializeField] private GameInput gameInput; // Reference to the GameInput class for handling input
+    [SerializeField] private LayerMask countersLayerMask; // Layer mask to identify counters
+    [SerializeField] private Transform kitchenObjectHoldPoint; // Transform where the kitchen object will be held
 
     // Private fields for internal state management
-    private bool isWalking;
-    private Vector3 lastInteractDir;
-    private BaseCounter selectedCounter;
-    private KitchenObject kitchenObject;
+    private bool isWalking; // Flag to check if the player is walking
+    private Vector3 lastInteractDir; // Direction of the last interaction
+    private BaseCounter selectedCounter; // Currently selected counter
+    private KitchenObject kitchenObject; // Currently held kitchen object
 
     private void Awake()
     {
@@ -76,12 +76,13 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
+        // Update the last interaction direction if the player is moving
         if (moveDir != Vector3.zero)
         {
             lastInteractDir = moveDir;
         }
 
-        float interactDistance = 2f;
+        float interactDistance = 2f; // Distance within which the player can interact with counters
         // Perform a raycast to detect counters in the interaction direction
         if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
         {
@@ -115,9 +116,9 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
-        float moveDistance = moveSpeed * Time.deltaTime;
-        float playerRadius = .7f;
-        float playerHeight = 2f;
+        float moveDistance = moveSpeed * Time.deltaTime; // Calculate the distance to move in this frame
+        float playerRadius = .7f; // Radius of the player's collider
+        float playerHeight = 2f; // Height of the player's collider
         // Check if the player can move in the desired direction using a capsule cast
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
 
@@ -150,9 +151,9 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             transform.position += moveDir * moveDistance;
         }
 
-        isWalking = moveDir != Vector3.zero;
+        isWalking = moveDir != Vector3.zero; // Update the walking state
 
-        float rotateSpeed = 10f;
+        float rotateSpeed = 10f; // Speed at which the player rotates
         // Smoothly rotate the player to face the movement direction
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
