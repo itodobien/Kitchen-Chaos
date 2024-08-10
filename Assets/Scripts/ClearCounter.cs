@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ClearCounter : BaseCounter
 {
-    // Reference to the KitchenObjectScriptObj which contains the prefab to be instantiated
-    [SerializeField] private KitchenObjectScriptObj kitchenObjectScriptObj;
+    // Reference to the KitchenObjectSO which contains the prefab to be instantiated
+    [SerializeField] private KitchenObjectSO kitchenObjectScriptObj;
 
     // Override the Interact method to handle player interaction with the clear counter
     public override void Interact(Player player)

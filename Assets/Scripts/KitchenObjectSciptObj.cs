@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu()]
-public class KitchenObjectScriptObj : ScriptableObject
+public class KitchenObjectSO : ScriptableObject
 {
     // Reference to the prefab of the kitchen object
     public Transform prefab;

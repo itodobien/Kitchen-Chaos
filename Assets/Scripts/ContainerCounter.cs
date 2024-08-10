@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ContainerCounter : BaseCounter
 {
-    // Reference to the KitchenObjectScriptObj which contains the prefab to be instantiated
-    [SerializeField] private KitchenObjectScriptObj kitchenObjectScriptObj;
+    // Reference to the KitchenObjectSO which contains the prefab to be instantiated
+    [SerializeField] private KitchenObjectSO kitchenObjectScriptObj;
 
     // Event triggered when the player grabs an object from the container
     public event EventHandler OnPlayerGrabbedObject;
