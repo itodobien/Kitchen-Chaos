@@ -8,6 +8,7 @@ load_dotenv()
 
 # Use the API key from the environment variable
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+print(f"API Key loaded: {'Yes' if ANTHROPIC_API_KEY else 'No'}")
 
 def is_git_repository():
     try:
