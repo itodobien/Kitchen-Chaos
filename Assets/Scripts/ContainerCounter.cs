@@ -17,15 +17,10 @@ public class ContainerCounter : BaseCounter
         if (!player.HasKitchenObject())
             //Player is not carrying a kitchen object
         {
+            KitchenObject.SpawnKitchenObject(kitchenObjectScriptObj, player);
 
-        // Instantiate the kitchen object prefab
-        Transform kitchenObjectTransform = Instantiate(kitchenObjectScriptObj.prefab);
-
-        // Set the parent of the instantiated kitchen object to the player
-        kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
-
-        // Invoke the OnPlayerGrabbedObject event
-        OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
+            // Invoke the OnPlayerGrabbedObject event
+            OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
         }
     }
 }

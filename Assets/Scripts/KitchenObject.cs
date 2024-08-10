@@ -43,4 +43,14 @@ public class KitchenObject : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public static KitchenObject SpawnKitchenObject(KitchenObjectScriptObj kitchenObjectScriptObj, IKitchenObjectParent kitchenObjectParent)
+    {
+        Transform kitchenObjectTransform = Instantiate(kitchenObjectScriptObj.prefab);
+
+        KitchenObject kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
+        
+        kitchenObject.SetKitchenObjectParent(kitchenObjectParent);
+
+        return kitchenObject;
+    }
 }
