@@ -36,7 +36,7 @@ def generate_commit_message(diff):
         response = client.completions.create(
             model="claude-1",
             max_tokens_to_sample=1000,
-            prompt=f"{HUMAN_PROMPT}You are an expert in creating meaningful git commit messages. Analyze the provided diff and create a commit message that summarizes the changes in 2-3 sentences. Start with a short (50 chars max) summary line, followed by a blank line, then more detailed explanation if needed.\n\n{diff}\n\n{AI_PROMPT}"
+            prompt=f"{HUMAN_PROMPT}You are an expert in creating meaningful git commit messages. Analyze the provided diff and create a commit message that summarizes the changes in 2-3 sentences. Start with a short (50 chars max) summary line, followed by a blank line, then more detailed explanation if needed. Avoid any introductiory phrases. Only include the commit message in the response.  \n\n{diff}\n\n{AI_PROMPT}"
         )
         commit_message = response.completion.strip()  # Access the 'completion' attribute correctly
         return commit_message
