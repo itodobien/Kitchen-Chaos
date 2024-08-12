@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class ContainerCounterVisual : MonoBehaviour
 {
-    // Constant string for the animation trigger
     private const string OPEN_CLOSE = "OpenClose";
 
-    // Reference to the ContainerCounter component
     [SerializeField] private ContainerCounter containerCounter;
-
-    // Reference to the Animator component
     private Animator animator;
 
     private void Awake()
@@ -21,13 +17,29 @@ public class ContainerCounterVisual : MonoBehaviour
 
     private void Start()
     {
-        // Subscribe to the OnPlayerGrabbedObject event
-        containerCounter.OnPlayerGrabbedObject += ContainerCounter_OnPlayerGrabbedObject;
+        // Subscribe to the OnPlayerGrabbedObject event if containerCounter is not null
+        if (containerCounter != null)
+        {
+            containerCounter.OnPlayerGrabbedObject += ContainerCounter_OnPlayerGrabbedObject;
+        }
+        else
+        {
+            Debug.LogError("ContainerCounterVisual: containerCounter reference is null");
+        }
     }
 
     private void ContainerCounter_OnPlayerGrabbedObject(object sender, System.EventArgs e)
     {
-        // Trigger the open/close animation
+        // Trigger the OpenClose animation when the player grabs an object
         animator.SetTrigger(OPEN_CLOSE);
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribe from the OnPlayerGrabbedObject event to avoid memory leaks
+        if (containerCounter != null)
+        {
+            containerCounter.OnPlayerGrabbedObject -= ContainerCounter_OnPlayerGrabbedObject;
+        }
     }
 }

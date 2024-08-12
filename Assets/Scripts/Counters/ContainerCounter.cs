@@ -5,22 +5,22 @@ using UnityEngine;
 
 public class ContainerCounter : BaseCounter
 {
-    // Reference to the KitchenObjectSO which contains the prefab to be instantiated
     [SerializeField] private KitchenObjectSO kitchenObjectScriptObj;
+    public event System.EventHandler OnPlayerGrabbedObject;
 
-    // Event triggered when the player grabs an object from the container
-    public event EventHandler OnPlayerGrabbedObject;
-
-    // Override the Interact method to handle player interaction with the container
+    /// <summary>
+    /// Interacts with the player. If the player does not have a kitchen object,
+    /// spawns a new kitchen object and invokes the OnPlayerGrabbedObject event.
+    /// </summary>
+    /// <param name="player">The player interacting with the counter.</param>
     public override void Interact(Player player)
     {
         if (!player.HasKitchenObject())
-            //Player is not carrying a kitchen object
         {
+            // Spawn a new kitchen object and assign it to the player
             KitchenObject.SpawnKitchenObject(kitchenObjectScriptObj, player);
-
-            // Invoke the OnPlayerGrabbedObject event
-            OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
+            // Invoke the event to notify that the player has grabbed an object
+            OnPlayerGrabbedObject?.Invoke(this, System.EventArgs.Empty);
         }
     }
 }

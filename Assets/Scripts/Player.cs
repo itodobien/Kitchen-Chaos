@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Player : MonoBehaviour, IKitchenObjectParent
 {
     // Singleton instance of the Player class
@@ -10,6 +12,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     // Event triggered when the selected counter changes
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
         public BaseCounter selectedCounter;
@@ -122,7 +125,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         {
             // Clear the selected counter if no counter is in range
             SetSelectedCounter(null);
-            Debug.Log("No counter in range"); // Debug log
         }
     }
 

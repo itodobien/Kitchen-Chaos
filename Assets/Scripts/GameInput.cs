@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
+
 public class GameInput : MonoBehaviour
 {
     // Event triggered when the interact action is performed
@@ -22,11 +23,11 @@ public class GameInput : MonoBehaviour
         // Subscribe to the Interact action performed event
         playerInputActions.Player.Interact.performed += Interact_performed;
         playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
-
     }
 
     private void InteractAlternate_performed(InputAction.CallbackContext obj)
     {
+        // Invoke the OnInteractAlternateAction event when the alternate interact action is performed
         OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
     }
 
@@ -36,7 +37,10 @@ public class GameInput : MonoBehaviour
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 
-    // Method to get the normalized movement vector from the input
+    /// <summary>
+    /// Method to get the normalized movement vector from the input.
+    /// </summary>
+    /// <returns>Normalized movement vector.</returns>
     public Vector2 GetMovementVectorNormalized()
     {
         // Read the movement input vector

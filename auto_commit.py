@@ -36,9 +36,9 @@ def generate_commit_message(diff):
         response = client.completions.create(
             model="claude-1",
             max_tokens_to_sample=2000,
-            prompt=f"{HUMAN_PROMPT}You are an expert in creating meaningful git commit messages. Analyze the provided diff and create a commit message that summarizes the changes in 2-3 sentences. Start with a short (50 chars max) summary line, followed by a blank line, then more detailed explanation if needed. Avoid any introductiory phrases. Only include the commit message in the response.  \n\n{diff}\n\n{AI_PROMPT}"
+            prompt=f"{HUMAN_PROMPT}You are an expert in crafting concise and informative Git commit messages. Analyze the provided diff and create a commit message that summarizes the changes, starting with a brief title (max 40 characters) that serves as an overall summary. After a blank line for formatting, provide a detailed explanation in 2-3 sentences that captures the essence of the changes. Avoid introductory phrases and focus only on the content of the commit message.\n\n{diff}\n\n{AI_PROMPT}"
         )
-        commit_message = response.completion.strip()  # Access the 'completion' attribute correctly
+        commit_message = response.completion.strip()
         return commit_message
     except Exception as e:
         print(f"Error during API request: {e}")
@@ -59,11 +59,11 @@ def commit_changes(commit_message):
         print(f"Error committing changes: {e}")
 
 def main():
-    if not is_git_repository():
-        print("Current directory is not a Git repository.")
-        return
     if not ANTHROPIC_API_KEY:
         print("ANTHROPIC_API_KEY is not set in the environment variables.")
+        return
+    if not is_git_repository():
+        print("Current directory is not a Git repository.")
         return
     changed_files, diff = get_git_changes()
     if not diff:
@@ -72,8 +72,9 @@ def main():
     print("Changes detected:", changed_files)
     print("Generating commit message...")
     commit_message = generate_commit_message(diff)
-    print("Committing changes...")
-    commit_changes(commit_message)
+    if commit_message:
+        print("Committing changes...")
+        commit_changes(commit_message)
 
 if __name__ == "__main__":
     main()
