@@ -1,6 +1,6 @@
 import os
 import subprocess
-from anthropic import Anthropic, HUMAN_PROMPT, AI_PROMPT
+from anthropic import Anthropic
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -36,7 +36,7 @@ def generate_commit_message(diff):
         response = client.completions.create(
             model="claude-1",
             max_tokens_to_sample=2000,
-            prompt=f"{HUMAN_PROMPT}You are an expert in crafting concise and informative Git commit messages. Analyze the provided diff and create a commit message that summarizes the changes, starting with a brief title (max 40 characters) that serves as an overall summary. After a blank line for formatting, provide a detailed explanation in 2-3 sentences that captures the essence of the changes. Avoid introductory phrases and focus only on the content of the commit message.\n\n{diff}\n\n{AI_PROMPT}"
+            prompt=f"\n\nHuman: You are an expert in crafting concise and informative Git commit messages. Analyze the provided diff and create a commit message that summarizes the changes, starting with a brief title (max 40 characters) that serves as an overall summary. After a blank line for formatting, provide a detailed explanation in 2-3 sentences that captures the essence of the changes. Avoid introductory phrases and focus only on the content of the commit message.\n\n{diff}\n\nAssistant:"
         )
         commit_message = response.completion.strip()
         return commit_message
