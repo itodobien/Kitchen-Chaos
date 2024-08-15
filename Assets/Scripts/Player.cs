@@ -10,6 +10,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     // Singleton instance of the Player class
     public static Player Instance { get; private set; }
 
+    public event EventHandler onPickedSomething; // Event triggered when the player picks up a kitchen object
+
     // Event triggered when the selected counter changes
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
 
@@ -35,7 +37,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         // Ensure there is only one instance of the Player class
         if (Instance != null)
         {
-            Debug.LogError("There is more than one Player instance in the scene.");
         }
         Instance = this;
     }
@@ -49,31 +50,30 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
     {
-        Debug.Log("Interact Alternate action triggered"); // Debug log
+        if (!KitchenGameManager.Instance.IsGamePlaying()) return;
+
         if (selectedCounter != null)
         {
             // Interact with the selected counter
             selectedCounter.InteractAlternate(this);
-            Debug.Log($"Interacting with {selectedCounter.gameObject.name}"); // Debug log
         }
         else
         {
-            Debug.Log("No counter selected for interaction"); // Debug log
         }
     }
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-        Debug.Log("Interact action triggered"); // Debug log
+
+        if (!KitchenGameManager.Instance.IsGamePlaying()) return;
         if (selectedCounter != null)
         {
             // Interact with the selected counter
             selectedCounter.Interact(this);
-            Debug.Log($"Interacting with {selectedCounter.gameObject.name}"); // Debug log
         }
         else
         {
-            Debug.Log("No counter selected for interaction"); // Debug log
+     
         }
     }
 
@@ -111,14 +111,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                 {
                     // Set the selected counter if a new counter is detected
                     SetSelectedCounter(baseCounter);
-                    Debug.Log($"Selected counter: {baseCounter.gameObject.name}"); // Debug log
                 }
             }
             else
             {
                 // Clear the selected counter if no counter is detected
                 SetSelectedCounter(null);
-                Debug.Log("No counter selected"); // Debug log
             }
         }
         else
@@ -195,6 +193,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
         this.kitchenObject = kitchenObject;
+        if (kitchenObject != null)
+        {
+            onPickedSomething?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public KitchenObject GetKitchenObject()
@@ -202,7 +204,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         return kitchenObject;
     }
 
-    public void ClearKitchenObject()
+    public void ClearKitchenObject() 
     {
         kitchenObject = null;
     }

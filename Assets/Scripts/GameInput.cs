@@ -5,15 +5,20 @@ using System;
 
 public class GameInput : MonoBehaviour
 {
+    public static GameInput Instance { get; private set; }
+
     // Event triggered when the interact action is performed
     public event EventHandler OnInteractAction;
     public event EventHandler OnInteractAlternateAction;
+    public event EventHandler OnPauseAction;
 
     // Reference to the PlayerInputActions
     private PlayerInputActions playerInputActions;
 
     private void Awake()
     {
+        Instance = this;
+
         // Initialize the PlayerInputActions
         playerInputActions = new PlayerInputActions();
 
@@ -23,8 +28,22 @@ public class GameInput : MonoBehaviour
         // Subscribe to the Interact action performed event
         playerInputActions.Player.Interact.performed += Interact_performed;
         playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
+        playerInputActions.Player.Pause.performed += Pause_performed;
     }
 
+    private void OnDestroy()
+    {
+        playerInputActions.Player.Interact.performed -= Interact_performed;
+        playerInputActions.Player.InteractAlternate.performed -= InteractAlternate_performed;
+        playerInputActions.Player.Pause.performed -= Pause_performed;
+
+        playerInputActions.Dispose();
+    }
+
+    private void Pause_performed(InputAction.CallbackContext obj)
+    {
+        OnPauseAction?.Invoke(this, EventArgs.Empty);
+    }
     private void InteractAlternate_performed(InputAction.CallbackContext obj)
     {
         // Invoke the OnInteractAlternateAction event when the alternate interact action is performed

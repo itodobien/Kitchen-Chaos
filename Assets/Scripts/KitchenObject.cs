@@ -20,6 +20,7 @@ public class KitchenObject : MonoBehaviour
         // Clear the current parent if it exists
         if (this.kitchenObjectParent != null)
         {
+            Debug.Log($"Clearing current parent: {this.kitchenObjectParent}");
             this.kitchenObjectParent.ClearKitchenObject();
         }
 
@@ -35,6 +36,8 @@ public class KitchenObject : MonoBehaviour
         kitchenObjectParent.SetKitchenObject(this);
         transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
         transform.localPosition = Vector3.zero;
+
+        Debug.Log($"Set new parent: {kitchenObjectParent}");
     }
 
     // Returns the current parent of the kitchen object
@@ -46,6 +49,7 @@ public class KitchenObject : MonoBehaviour
     // Destroys the kitchen object and clears it from the parent
     public void DestroySelf()
     {
+        Debug.Log($"Destroying kitchen object: {this}");
         kitchenObjectParent.ClearKitchenObject();
         Destroy(gameObject);
     }
