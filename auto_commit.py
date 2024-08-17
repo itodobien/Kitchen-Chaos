@@ -36,7 +36,7 @@ def generate_commit_message(diff):
         response = client.completions.create(
             model="claude-1",
             max_tokens_to_sample=2000,
-            prompt=f"\n\nHuman: Analyze the provided diff and create a commit message that summarizes the changes, starting with a brief title (max 40 characters) that serves as an overall summary. After a blank line for formatting, provide a detailed explanation in 2-3 sentences that captures the essence of the changes. Avoid introductory phrases or requests for review at the end, and focus only on the content of the commit message.\n\n{diff}\n\nAssistant:"
+            prompt=f"\n\nHuman: Analyze the diff and create a commit message summarizing the changes. Start with a brief title (max 40 chars) as an overall summary. After a blank line, provide a detailed explanation in 2-3 sentences that captures the essence of the changes. Avoid introductory phrases or review requests.\n\n{diff}\n\nAssistant:"
         )
         commit_message = response.completion.strip()
         return commit_message
